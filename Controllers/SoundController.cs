@@ -7,17 +7,16 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 
-namespace WebApplication2.Controllers
+namespace WebApplication.Controllers
 {
     public class SoundController : ApiController
     {
 
-        private static WaveOut waveOut;
-
+        private static WaveOutEvent waveOut;
         [HttpGet]
-        public void Play()
+        public void Play(int id)
         {
-            var t = new Thread(() => StartPlay());
+            var t = new Thread(() => StartPlay(id));
             t.Start();
         }
 
@@ -28,16 +27,22 @@ namespace WebApplication2.Controllers
                 waveOut.Stop();
         }
 
-        private void StartPlay()
+
+
+            private void StartPlay(int location)
         {
-            if (waveOut == null)
-            {
-                waveOut = new WaveOut();
-                var mp3Reader = new Mp3FileReader("C:\\Media\\sb.mp3");
+
+          //  if (waveOut == null)
+           // {
+                waveOut = new WaveOutEvent();
+                waveOut.DeviceNumber = location;
+                //devicenumber - порядковый номер звуковой карты
+                var mp3Reader = new Mp3FileReader("C:\\Media\\b.mp3");
                 waveOut.Init(mp3Reader);
-            }
+         //   }
             waveOut.Play();
         }
+
     }
 }
 
